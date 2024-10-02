@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Task Manager</title>
+</head>
+<body>
+    <h1>All Tasks</h1>
+    <a href="{% url 'add_task' %}">Add New Task</a>
+
+    <ul>
+        {% for task in tasks %}
+        <li>{{ task.title }} - {{ task.priority }}- {{ task.status }}
+            <a href="{% url 'edit_task' task.id %}">Edit</a>
+            <a href="{% url 'delete_task' task.id  %}">Delete</a>   
+        </li>
+        {% endfor %}    
+    </ul>
+</body>
+</html>
