@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task page</title>
+    <link rel="stylesheet" href="{% static 'CSS/task_page.css'  %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Task Manager Application</h1>           
+    </div>
+    <div class="container1">
+        <button><a href="{% url 'task_add'  %}">Add Task </a></button>
+
+            <form method="POST" action="{% url 'filter_tasks_by_priority' %}">
+                {% csrf_token %}
+                <label for="priority">Filter by Priority:</label>
+                <select id="priority" name="priority">
+                    <option value="">All</option>
+                    <option value="High" {% if selected_priority == "High" %}selected{% endif %}>High</option>
+                    <option value="Medium" {% if selected_priority == "Medium" %}selected{% endif %}>Medium</option>
+                    <option value="Low" {% if selected_priority == "Low" %}selected{% endif %}>Low</option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+    </div>
+    
+        <table>
+          <tr>
+            <th>Task ID</th>
+            <th>Task Title</th>
+            <th>Task Description</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>   
+          <tr>
+            {% for i in tasks %}
+            <td>{{ i.id }}</td>
+            <td>{{ i.title}}</td>
+            <td>{{ i.description }}</td>
+            <td>{{ i.priority }}</td>
+            <td>{{ i.status }}</td>
+            <td><a href="{%  url 'edit_taskid' i.id %}">Edit</a></td>
+            <td><a href="{% url 'delete_taskid' i.id %}">Delete</a></td>
+            
+          </tr>
+          {% endfor %}         
+        </table>
+    
+        
+</body>
+</html>
