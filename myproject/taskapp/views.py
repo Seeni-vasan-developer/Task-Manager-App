@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from .models import *
 from .forms import TaskForm
 
@@ -44,7 +45,7 @@ def task_add(request):
         status = request.POST['status']
         
         Task.objects.create(title=title,description=description,priority=priority,status=status)
-
+        messages.success(request,'Add Successfully')
         return redirect('task_page')
     
     else:
@@ -64,6 +65,7 @@ def edit_taskid(request,id):
         task.status = status
 
         task.save()
+        messages.success(request,"update successfully")
         return redirect('task_page')
     else:
         return render(request,'edit_taskid.html',{'task':task})
@@ -71,6 +73,7 @@ def edit_taskid(request,id):
 def delete_taskid(request,id):
     task = Task.objects.get(id=id)
     task.delete()
+    messages.success(request,"Delete Successfully")
     return redirect('task_page')
 
 def filter_tasks_by_priority(request):
@@ -82,8 +85,6 @@ def filter_tasks_by_priority(request):
         else:
             tasks = Task.objects.all()  # If no priority is selected, return all tasks
 
-        # Redirect to another HTML page after filtering
         return render(request, 'priority.html', {'tasks': tasks, 'selected_priority': priority})
     
-    # If it's a GET request, just show the form without filtering
     return render(request, 'task_page.html')
